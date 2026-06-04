@@ -1,0 +1,27 @@
+theme: jekyll-theme-minimal
+
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+highlighter: rouge
+plugins_dir: _plugins
+baseurl: /crane
+
+title: "crane"
+description: "Use crane from 4D"
+logo: "/assets/logo.png"   # optional
+show_downloads: true       # controls the download links in header
+github:
+  is_user_page: true
+  owner_url: "https://github.com/miyako"
+  repository_url: "https://github.com/miyako/crane"
+  is_project_page: false
+
+exclude:
+  - "vendor"
+  - "resources"
+  - "LICENSE"
+  - "README.md"
+  - "Gemfile"
+  - "crane/*"
+  - "package.json"
