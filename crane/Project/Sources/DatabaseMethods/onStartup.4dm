@@ -27,33 +27,28 @@ $event.onResponse:=Formula:C1597(MESSAGE:C88(This:C1470.file.fullName+":download
 $event.onTerminate:=Formula:C1597(LOG EVENT:C667(Into 4D debug message:K38:5; (["process"; $1.pid; "terminated!"].join(" "))))
 
 var $folder : 4D:C1709.Folder
-var $path : Text
+var $path; $tokenizer : Text
 
 $port:=8081
 
-$folder:=$homeFolder.folder("gemma-4-E2B")
-$path:="gemma-4-E2B-it-q4_k_m.gguf"
-$URL:="keisuke-miyako/gemma-4-E2B-it-gguf"
+$folder:=$homeFolder.folder("Qwen3.5-0.8B")
+$path:="Qwen3.5-0.8B-Q4_K_M.gguf"
+$tokenizer:="tokenizer.json"
+$URL:="keisuke-miyako/Qwen3.5-0.8B-gguf"
 
-$batches:=4
+$batches:=1
 $max_position_embeddings:=8192
-
-var $logFile : 4D:C1709.File
-$logFile:=$folder.file("crane.log")
-$folder.create()
-If (Not:C34($logFile.exists))
-	$logFile.setContent(4D:C1709.Blob.new())
-End if 
 
 var $options : Object
 
 $options:={\
 max_seq_len: $max_position_embeddings*$batches; \
-max_concurrent: $batches}
+max_concurrent: $batches; \
+gpu_memory_limit: "8G"}
 
 var $huggingfaces : cs:C1710.event.huggingfaces
 
-$huggingface:=cs:C1710.event.huggingface.new($folder; $URL; [$path])
+$huggingface:=cs:C1710.event.huggingface.new($folder; $URL; [$path; $tokenizer])
 $huggingfaces:=cs:C1710.event.huggingfaces.new([$huggingface])
 
 $crane:=cs:C1710.crane.new($port; $huggingfaces; $homeFolder; $options; $event)
